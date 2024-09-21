@@ -7,6 +7,7 @@ from PIL import Image
 # Load the pre-trained AlexNet model
 from torchvision.models import alexnet
 import json
+import matplotlib.pyplot as plt
 def load_class_labels(file_path='imagenet_classes.json'):
     with open(file_path, 'r') as f:
         class_labels = json.load(f)
@@ -67,7 +68,7 @@ def visualize_predictions(top_predictions):
     plt.ylabel('Probability')
     plt.title('Top Predictions')
     plt.show()
-    
+
 if __name__ == '__main__':
 
     # Load the pre-trained AlexNet model
