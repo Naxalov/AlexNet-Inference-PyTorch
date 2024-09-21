@@ -55,6 +55,19 @@ def get_top_predictions(outputs,class_labels, top_k=3):
         )
 
     return predictions
+
+# visualizetion of probabilitiy using bar char
+def visualize_predictions(top_predictions):
+    labels = [item['class'] for item in top_predictions]
+    probabilities = [item['probability'] for item in top_predictions]
+
+    # Create a bar chart
+    plt.bar(labels, probabilities)
+    plt.xlabel('Class')
+    plt.ylabel('Probability')
+    plt.title('Top Predictions')
+    plt.show()
+    
 if __name__ == '__main__':
 
     # Load the pre-trained AlexNet model
