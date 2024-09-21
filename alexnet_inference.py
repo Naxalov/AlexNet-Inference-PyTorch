@@ -26,9 +26,9 @@ def preprocess_image(image_path):
     image = image.unsqueeze(0)  # Add batch dimension
     return image
 
-def load_model(model_path):
+def load_model(weights='IMAGENET1K_V1'):
     # Load the pre-trained AlexNet model
-    model = alexnet(weights='IMAGENET1K_V1')
+    model = alexnet(weights=weights)
     # Set the model to evaluation mode
     model.eval()
     return model
