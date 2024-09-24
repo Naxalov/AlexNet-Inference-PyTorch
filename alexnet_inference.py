@@ -1,4 +1,5 @@
-# Import necessary libraries
+# # Import necessary libraries
+import argparse
 import numpy as np
 from torchvision import transforms
 import torch
@@ -8,6 +9,11 @@ from PIL import Image
 from torchvision.models import alexnet
 import json
 import matplotlib.pyplot as plt
+
+def load_image(image_path):
+    image = Image.open(image_path)
+    return image
+
 def load_class_labels(file_path='imagenet_classes.json'):
     with open(file_path, 'r') as f:
         class_labels = json.load(f)
@@ -58,32 +64,53 @@ def get_top_predictions(outputs,class_labels, top_k=3):
     return predictions
 
 # visualizetion of probabilitiy using bar char
-def visualize_predictions(top_predictions):
+def visualize_predictions(top_predictions,save_path='top_predictions.png'):
     labels = [item['class'] for item in top_predictions]
     probabilities = [item['probability'] for item in top_predictions]
+
 
     # Create a bar chart
     plt.bar(labels, probabilities)
     plt.xlabel('Class')
     plt.ylabel('Probability')
     plt.title('Top Predictions')
-    plt.show()
+
+    # Save the chart
+    plt.savefig(save_path)
+
+    # Close the chart
+    plt.close()
+  
+
+
 
 if __name__ == '__main__':
-
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--image', type=str,help='path to image')
+    parser.add_argument('--weights', type=str, default='IMAGENET1K_V1', help='path to model weights')
+    args = parser.parse_args()
+    image_path = args.image
+    weights = args.weights
     # Load the pre-trained AlexNet model
-    model = load_model()
-
-    # Load and preprocess the image
-    image = preprocess_image('image.jpg')
-
+    model = load_model(weights)
+    # Load the image
+    image = load_image(image_path)
+    # Preprocess the image
+    image = preprocess_image(image_path)
     # Pass the image through the model
     outputs = predict(image, model)
     # Get the top predictions
-    predictions = get_top_predictions(outputs,load_class_labels())
+    top_predictions = get_top_predictions(outputs, load_class_labels())
+    # Visualize the top predictions
+    visualize_predictions(top_predictions)
 
-    # Print the top predictions
-    print(predictions)
+    
+
+
+    
+
+
 
    
 
