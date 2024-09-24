@@ -1,0 +1,1 @@
+python3 alexnet_inference.py --image 1.jpg
