@@ -7,7 +7,7 @@ import torch
 
 from PIL import Image
 # Load the pre-trained AlexNet model
-from torchvision.models import alexnet
+from torchvision.models import alexnet,AlexNet_Weights
 import json
 import matplotlib.pyplot as plt
 
@@ -22,12 +22,8 @@ def load_class_labels(file_path='imagenet_classes.json'):
 
 def preprocess_image(image_path):
     # Define the image preprocessing transforms
-    transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    transform = AlexNet_Weights.IMAGENET1K_V1.transforms
+   
     # Load and preprocess the image
     image = Image.open(image_path).convert('RGB')
     image = transform(image)
