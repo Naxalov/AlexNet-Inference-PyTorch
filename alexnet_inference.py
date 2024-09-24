@@ -1,4 +1,5 @@
 # # Import necessary libraries
+import os
 import argparse
 import numpy as np
 from torchvision import transforms
@@ -85,6 +86,8 @@ def visualize_predictions(top_predictions,save_path='top_predictions.png'):
 
 
 if __name__ == '__main__':
+    # Print current working directory
+    
     # Parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', type=str,help='path to image')
@@ -100,8 +103,13 @@ if __name__ == '__main__':
     image = preprocess_image(image_path)
     # Pass the image through the model
     outputs = predict(image, model)
+    PYTHONPATH = os.environ.get('PYTHONPATH')
+    if PYTHONPATH:
+        label_path = os.path.join(PYTHONPATH, 'imagenet_classes.json')
+    else:
+        label_path = 'imagenet_classes.json'
     # Get the top predictions
-    top_predictions = get_top_predictions(outputs, load_class_labels())
+    top_predictions = get_top_predictions(outputs, load_class_labels(label_path))
     # Visualize the top predictions
     visualize_predictions(top_predictions)
 
